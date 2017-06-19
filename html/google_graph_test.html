@@ -1,0 +1,46 @@
+<doctype html>
+    <html lang="en">
+    <head>
+        <!-- Declare the charset so firefox doesn't bitch -->
+        <meta charset="utf-8"/>
+
+        <!-- This script adds the google charts script -->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+        <!-- This script actually displays the chart -->
+        <script type="text/javascript">
+            function drawGID() {
+                var queryString = encodeURIComponent('SELECT A, H, O, Q, R, U LIMIT 5 OFFSET 8');
+                var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1XWJLkAwch5GXAt_7zOFDcg8Wm8Xv29_8PWuuW15qmAE/gviz/tq?gid=0&headers=1&tq=' + queryString);
+                query.send(handleQueryResponse);
+             }
+
+            function handleQueryResponse(response) {
+                if (response.isError()) {
+                    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                    return;
+                }
+                var data = response.getDataTable();
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                chart.draw(data, { height: 400 });
+            }
+        </script>
+
+        <!-- This script loads the core of the script -->
+        <script type="text/javascript">
+        // Load the Visualization API and the piechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        // Notice how in the word in the parenthesis of "setOnLoadCallback(drawGID)"
+        // matches the function name in teh script below
+        google.charts.setOnLoadCallback(drawGID);
+        </script>
+    </head>
+
+    <body>
+        <div id="chart_div"></div>
+    </body>
+
+</html>
